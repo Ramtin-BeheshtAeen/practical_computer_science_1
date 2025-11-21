@@ -6,11 +6,13 @@ class Field
 {
     final String[] field;
     
-    //ToDo: Add docs:
+    /**
+    * Creates a new Field.
+    * @param field the ASCII map as a String array
+    */
+   
     public Field(String[] field){
         this.field = field;
-        //Testing:
-        //System.out.println(field.length);
     }
     
     /**
@@ -42,51 +44,51 @@ class Field
     };
     
     
-    //ToDo: Add docs
+    /**
+     * Returns the character at position (x, y), or a space if out of bounds.
+     * @param x the column index
+     * @param y the row index
+     * @return the character at the given position
+     */
     private char getChar(int x, int y){
-        if( x >= 9 || x < 0  || y >= 9 || y < 0){
+        if( y >= field.length || y < 0  || x >= field[y].length() || x < 0){
             return ' ';
         }
         else {
             String row = field[y];
             return row.charAt(x);
         }
-        //ToDo: Add option for errors outside of bounderies
+        
     };
     
+    /**
+     * Calculates a neighborhood index for position (x, y).
+     * @param x the column index
+     * @param y the row index
+     * @return a number (0–15) describing the connections
+    */
+    
     private int getNeighborhood(int x, int y){
-        System.out.println(x);
-        System.out.println(y);
         int index = 0;
-        //check right side:
+        
         if (getChar(x, y+1) != ' '){
-            System.out.println("right");
-            System.out.println(getChar(x+1, y));
             index += 2;
         };
-        //Check left side:
+
         if (getChar(x, y-1) != ' '){
-            System.out.println("left");
-            System.out.println(getChar(x-1, y));
             index += 8;
         };
-        //check above:
+  
         if (getChar(x-1, y) != ' '){
-            System.out.println("above");
-            System.out.println(getChar(x, y+1));
             index += 4;
         };
-        //check down:
+ 
         if (getChar(x+1, y) != ' '){
-            System.out.println("down");
-            System.out.println(getChar(x, y-1));
             index += 1;
         };
         return index;  
     };
     
-    
-
     
     /** Ein Testfall, der alle Nachbarschaften enthält. */
     static void test()
@@ -105,32 +107,15 @@ class Field
             "    |   |",
             "O-O-O-O-O"
         });
+
         
-        //test aufgabe 1:
         
-        for(int i=0; i<9;i++){
-            char selcetedChar = field.getChar(i, 1);
-            System.out.println(selcetedChar);
-        }
-        //test aufgabe 2:
-        //int selcetedNeighborhoodIndex = field.getNeighborhood(8, 8);
-        //System.out.println(selcetedNeighborhoodIndex);
-        //
-        for (int x=0; x<9; x++) {
-            for(int y=0; y<9; y++){
-                if (field.getChar(x, y)==' '){
-                    new GameObject(x, y, 0, "grass");
-                } else{
+        for (int y=0; y<field.field.length; y+=2 ) {
+            for(int x=0; x<field.field[y].length(); x+=2 ){
                 int selcetedNeighborhoodIndex = field.getNeighborhood(x, y);
-                System.out.println(selcetedNeighborhoodIndex);
                 String gameObject = neighborhoodToFilename[selcetedNeighborhoodIndex];
-                System.out.println("----");
-                System.out.println(x);
-                System.out.println(y);
-                System.out.println("----");
-                new GameObject(x, y, 0, gameObject);
+                new GameObject(x/2, y/2, 0, gameObject);
             }
-            };
         };
         
     };
