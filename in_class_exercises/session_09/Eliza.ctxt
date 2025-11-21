@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Eliza
+comment0.text=\r\n\ Texte\ entnommen\ aus\ dem\ Programm\ von\ Akshat\ Singhal,\ zu\ finden\ unter\r\n\ http\://simple-semantic-desktop.googlecode.com/svn-history/r4/trunk/Progs2/Eliza/eliza.java\r\n
+comment1.params=sentence
+comment1.target=java.lang.String\ respondTo(java.lang.String)
+comment1.text=\r\n\ Antworte\ auf\ einen\ Satz\ der\ Patientin.\r\n\ @param\ sentence\ Der\ Satz,\ der\ untersucht\ wird.\r\n\ @return\ Die\ passende\ Antwort.\r\n
+numComments=2

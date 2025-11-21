@@ -1,0 +1,108 @@
+\documentclass{pi1}
+
+\begin{document}
+
+% Titelzeile
+\maketitle{3}{ Praktikum 13: Mi, 17-20, MZH 0230, Marina Koksharova/Laura Eiermanns }{Ramtin}
+
+\section{Aufgabe 1 Einmal mit Klasse}
+\label{sec:aufgabe1}
+\textbf{Der folgende Text und Code wurden von mir erstellt.
+Da ich kein Muttersprachler bin, habe ich den Text in ChatGPT
+eingefügt, um Wörter und Sätze zu korrigieren. ChatGPT hat den 
+Inhalt inhaltlich nicht verändert, sondern nur sprachlich verbessert.
+Ob der Text nun etwas ‚roboterhaft‘ klingt, kann ich nicht genau
+beurteilen, aber die Anzahl der grammatischen und sprachlichen Fehler 
+ist deutlich geringer}
+
+In dieser Aufgabe wurde eine neue Klasse \texttt{NPC} erstellt, 
+die ein nicht steuerbares Spielobjekt beschreibt. 
+Sie enthält Attribute für die Figur, die maximale Anzahl der Schritte 
+und den aktuellen Schritt.
+
+\lstinputlisting[
+language=Java,
+firstline=0,
+lastline=10
+]{NPC.java}
+
+\textbf{Beschreibung:}  
+Diese Attribute speichern, welche Figur der NPC steuert 
+und wie weit sie sich auf ihrem Weg bewegen darf.
+
+
+\section{Aufgabe 2 Konstruktivismus}
+\label{sec:aufgabe2}
+
+Es wurde ein Konstruktor definiert, der die drei Attribute initialisiert.
+
+\lstinputlisting[
+language=Java,
+firstline=12,
+lastline=17
+]{NPC.java}
+
+\textbf{Beschreibung:}  
+Der Konstruktor weist jedem NPC sein Spielfigur-Objekt, 
+die maximale Schrittlänge und die aktuelle Position zu.
+
+
+\section{Aufgabe 3 Schritt für Schritt}
+\label{sec:aufgabe3}
+
+Die Klasse wurde um eine Methode \texttt{act()} erweitert, 
+die einen einzelnen Bewegungsschritt ausführt. 
+Die Figur läuft einen Schritt vorwärts, zählt diesen, 
+und wenn die maximale Schrittzahl erreicht ist, 
+dreht sie sich um und setzt den Zähler zurück.
+
+\lstinputlisting[
+language=Java,
+firstline=19,
+lastline=41
+]{NPC.java}
+
+\textbf{Beschreibung:}  
+Der NPC bewegt seine Figur abwechselnd hin und her, 
+indem er die Rotation um 2 erhöht, sobald die maximale Schrittlänge erreicht wurde.
+
+
+\section{Aufgabe 4 Und Action!}
+\label{sec:aufgabe4}
+
+In der Hauptmethode des Spiels (\texttt{NPCGame}) wurden mehrere NPCs erstellt, 
+und deren \texttt{act()}-Methoden werden nach jeder Spielerbewegung aufgerufen.
+
+\lstinputlisting[
+language=Java,
+firstline=46,
+lastline=97
+]{NPCGame.java}
+
+\textbf{Beschreibung:}  
+Nach jedem Tastendruck bewegt sich der Spieler, 
+danach führen die NPCs einen Schritt aus. 
+Die Figuren reagieren also unabhängig vom Spieler.
+
+
+
+\section{Aufgabe 5 Bonusaufgabe}
+\label{sec:aufgabe5}
+
+Die NPC-Objekte überprüfen in ihrer Methode \texttt{checkCollision()}, 
+ob sie die gleiche Position wie der Spieler erreicht haben. 
+Falls ja, wird die Spielfigur unsichtbar und das Spiel endet.
+
+\lstinputlisting[
+language=Java,
+firstline=43,
+lastline=51
+]{NPC.java}
+
+\textbf{Beschreibung:}  
+Sobald der NPC die gleiche Position wie der Spieler hat, 
+wird der Spieler mit \texttt{setVisible(false)} entfernt 
+und die Hauptschleife beendet sich automatisch.
+
+
+\end{document}

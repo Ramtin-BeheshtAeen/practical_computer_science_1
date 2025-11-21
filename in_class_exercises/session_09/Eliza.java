@@ -41,8 +41,8 @@ class Eliza
                  "I'm not sure I understand you fully.", "Can you elaborate?",
                  "That is quite interesting."}}
     };
-
-    private final Random random = new Random();
+    
+    private Random random = new Random();
 
     /**
      * Antworte auf einen Satz der Patientin.
@@ -51,13 +51,16 @@ class Eliza
      */
     String respondTo(final String sentence)
     {
-        if (sentence.trim().length() == 0) {
+        if (sentence.trim().length() == 0){
+            System.out.println(starters.length);
+            System.out.println(random.nextInt(starters.length));
             return starters[random.nextInt(starters.length)];
+            
         }
-
         final String[] words = sentence.split(" ");
         return remainingSentence(words, 0);
     }
+
 
     /**
      * Fasse die Wörter ab einer bestimmten Stelle wieder zu einem Satz zusammen
@@ -65,11 +68,10 @@ class Eliza
      * @param words Die Wörter des Satzes.
      * @param start Der Index des ersten Worts, ab dem der Satz wieder zusammengebaut wird.
      */
-    private String remainingSentence(final String[] words, final int start)
-    {
+    private String remainingSentence(final String[] words, final int start ){
         String sentence = "";
-        for (int i = start; i < words.length; ++i) {
-            sentence += " " + getReplacement(words[i]);
+        for (int i = start; i < words.length; i++){
+            sentence += getReplacement(words[i]);
         }
         return sentence;
     }
@@ -79,14 +81,9 @@ class Eliza
      * @param word Das Wort, dass ersetzt werden soll.
      * @return Das Ersatzwort, wenn es gefunden wurde. Ansonsten das Ursprungswort.
      */
-    private String getReplacement(final String word)
-    {
-        for (final String[] replacement : replacements) {
-            if (word.equalsIgnoreCase(replacement[0])) {
-                return replacement[1];
-            }
-            else if (word.equalsIgnoreCase(replacement[1])) {
-                return replacement[0];
+    private String getReplacement(final String word){
+        for(final String[] replacement : replacements) {
+            if(word.equals( replacments[0])){
             }
         }
         return word;

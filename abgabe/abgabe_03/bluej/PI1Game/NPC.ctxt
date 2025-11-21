@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=NPC
+comment0.text=\r\n\ Diese\ Klasse\ definiert\ <Zusammenfassung\ erg\u00E4nzen>\r\n\r\n\ @author\ Ramtin\r\n
+comment1.params=character\ maxStep\ startStep
+comment1.target=NPC(GameObject,\ int,\ int)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=player
+comment3.target=void\ checkCollision(GameObject)
+numComments=4
