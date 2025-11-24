@@ -1,0 +1,61 @@
+# -------------------------
+# LaTeX build artifacts
+# -------------------------
+
+# Intermediate files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+*.blg
+*.bbl
+*.dvi
+*.ilg
+*.ind
+*.idx
+*.glo
+*.gls
+*.ist
+*.acn
+*.acr
+*.alg
+
+# Generated PDF or other compiled outputs (optional)
+*.pdf
+
+# Editors
+*.swp
+*.swo
+
+# -------------------------
+# Archives
+# -------------------------
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+
+# -------------------------
+# OS-specific junk
+# -------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Linux
+*~
+

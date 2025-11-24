@@ -13,18 +13,17 @@
 Ich speichere das Spielfeld in der Klasse \texttt{Field} als \texttt{String}-Array. Ich kann einzelne Zellen lesen.  
 Dazu schreibe ich die Methode \texttt{getChar(int x, int y)}, die das Zeichen an der Stelle $(x, y)$ zurückgibt.  
 Wenn die Stelle außerhalb ist, gebe ich ein Leerzeichen zurück.
-
 \lstinputlisting[
  language  = Java,
  label     = {lst:field_constructor},
  firstline = 7,
  lastline  = 23
 ]{Field.java}
-
-\textbf{Erklärung:} Ich speichere das Spielfeld-Array im Konstruktor. In \texttt{getChar} prüfe ich, ob die Koordinaten gültig sind. Wenn ja, gebe ich das Zeichen zurück, sonst ein Leerzeichen.
-
+\textbf{Erklärung:} Ich speichere das Spielfeld-Array im
+ Konstruktor. In \texttt{getChar} prüfe ich, ob
+  die Koordinaten gültig sind. Wenn ja, gebe ich das
+   Zeichen zurück, sonst ein Leerzeichen.
 Ich habe auch die Methode \texttt{getCell(int x, int y)} gemacht. Sie macht das gleiche, gibt das Zeichen an der Stelle $(x, y)$ zurück oder ein Leerzeichen, wenn es außerhalb ist.
-
 \lstinputlisting[
  language  = Java,
  label     = {lst:getcell_full},
@@ -32,19 +31,24 @@ Ich habe auch die Methode \texttt{getCell(int x, int y)} gemacht. Sie macht das 
  lastline  = 63
 ]{Field.java}
 
-\textbf{Erklärung:} Ich prüfe zuerst, ob die Koordinaten gültig sind. Wenn ja, gebe ich das Zeichen zurück. Sonst gebe ich ein Leerzeichen. Der Konstruktor speichert weiter das Spielfeld.
+\textbf{Erklärung:} Ich prüfe zuerst, ob die
+ Koordinaten gültig sind. Wenn ja, gebe ich das 
+ Zeichen zurück. Sonst gebe ich ein Leerzeichen.
+  Der Konstruktor speichert weiter das Spielfeld.
 
 \section{Nachbarschaft berechnen}
 \label{sec:aufgabe2}
 
-Ich berechne für jede Zelle die Nachbarschaft.
+Ich berechne für
+ jede Zelle die Nachbarschaft.
  Die Methode
 
 \begin{lstlisting}[language=Java]
 int getNeighborhood(int x, int y)
 \end{lstlisting}
 
-gibt eine Zahl zwischen 0 und 15. Die Zahl zeigt, welche Nachbarn da sind: rechts (1), unten (2), links (4), oben (8).
+gibt eine Zahl zwischen 0 und 15. Die Zahl zeigt, 
+welche Nachbarn da sind: rechts (1), unten (2), links (4), oben (8).
 
 \lstinputlisting[
  language  = Java,
@@ -59,8 +63,8 @@ gibt eine Zahl zwischen 0 und 15. Die Zahl zeigt, welche Nachbarn da sind: recht
 Im Konstruktor gehe ich durch das Spielfeld. Ich berechne die Nachbarschaft und erstelle GameObjects. Ich benutze zwei \texttt{for}-Schleifen:  
 
 \begin{itemize}
-    \item Äußere Schleife: geht über jede zweite Zeile (\texttt{y += 2})
-    \item Innere Schleife: geht über jede zweite Spalte (\texttt{x += 2})
+\item Äußere Schleife: geht über jede zweite Zeile (\texttt{y += 2})
+\item Innere Schleife: geht über jede zweite Spalte (\texttt{x += 2})
 \end{itemize}
 
 \lstinputlisting[
@@ -70,9 +74,12 @@ Im Konstruktor gehe ich durch das Spielfeld. Ich berechne die Nachbarschaft und 
  lastline  = 123
 ]{Field.java}
 
-\textbf{Erklärung:} Für jede Zelle rufe ich \texttt{getNeighborhood} auf. Ich nehme die Zahl als Index in \texttt{neighborhoodToFilename}. Dann mache ich ein neues GameObject an der halbierten Position.
+\textbf{Erklärung:} Für jede Zelle rufe ich \texttt{getNeighborhood} auf. Ich nehme 
+die Zahl als Index in \texttt{neighborhoodToFilename}.
+ Dann mache ich ein neues GameObject an der halbierten Position.
 
-\textbf{Test:} Ich erstelle ein Testfeld und mache für alle Zellen GameObjects. So sehe ich, dass \texttt{getCell} und \texttt{getNeighborhood} funktionieren.
+\textbf{Test:} Ich erstelle ein Testfeld 
+und mache für alle Zellen GameObjects. So sehe ich, dass \texttt{getCell} und \texttt{getNeighborhood} funktionieren.
 
 \bibliography{Referenzen}
 

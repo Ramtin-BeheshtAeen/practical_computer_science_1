@@ -71,7 +71,7 @@ class Eliza
     private String remainingSentence(final String[] words, final int start ){
         String sentence = "";
         for (int i = start; i < words.length; i++){
-            sentence += getReplacement(words[i]);
+            sentence += " " + getReplacement(words[i]);
         }
         return sentence;
     }
@@ -82,8 +82,31 @@ class Eliza
      * @return Das Ersatzwort, wenn es gefunden wurde. Ansonsten das Ursprungswort.
      */
     private String getReplacement(final String word){
+        //For each String[] inside the array replacements,
+        //temporarily call that array replacement.”
+        /* 
+        Example structure:
+
+        String[][] replacements = {
+        {"cat", "feline"},
+            {"dog", "canine"}
+        };
+
+
+        Then in each loop, replacement will be:
+
+        1st iteration → {"cat", "feline"}
+
+        2nd iteration → {"dog", "canine"}   
+        */
         for(final String[] replacement : replacements) {
-            if(word.equals( replacments[0])){
+            if(word.equalsIgnoreCase(replacement[0])){
+            //in java == is address of string not it value!!
+              return replacement[1];      
+            }
+            else if (word.equalsIgnoreCase(replacement[1])){
+            //in java == is address of string not it value!!
+              return replacement[0];      
             }
         }
         return word;
