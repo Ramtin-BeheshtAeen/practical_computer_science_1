@@ -76,4 +76,43 @@ public class RingBufferTest
         
     }
     
+    @Test
+    //when 1 elemnts is inside:
+    //it is oldest so it should get deleted and return 0 as 
+    //only elemnt there
+    public void testPop1(){
+        ring_buffer_1.push(16);
+        ring_buffer_1.pop();
+        assertEquals(0, ring_buffer_1.peek());
+        
+    }
+    
+    @Test
+    //when 2 elemnts is inside:
+    //first one is oldest one, so it should get deleted and return second as 
+    //oldest element there
+    public void testPop2(){
+        ring_buffer_1.push(16);
+        ring_buffer_1.push(-10);
+        ring_buffer_1.pop();
+        assertEquals(-10, ring_buffer_1.peek());
+        
+    }
+    
+    @Test
+    //when more than 3 elemnts is inside:
+    //first one is oldest one, so it should get deleted and return second one as 
+    //oldest element there
+    public void testPop3(){
+        ring_buffer_1.push(16);
+        ring_buffer_1.push(-10);
+        ring_buffer_1.push(-3);
+        // here the 16 will be replace with -10
+        ring_buffer_1.push(8);
+        //-10 will be deleted
+        ring_buffer_1.pop();
+        //-3 will be returned as oldest
+        assertEquals(-3, ring_buffer_1.peek());
+        
+    }
 }
