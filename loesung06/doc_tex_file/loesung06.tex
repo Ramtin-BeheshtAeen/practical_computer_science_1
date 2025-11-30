@@ -154,7 +154,7 @@ werden fehlschlagen, oder Index -1 out of bounds for length 3 passier wird.
 \end{figure}
 
 
-% Iteration 3 (actual observed failure cause)
+% Iteration 3 
 \subsection*{Iteration 3}
 	\textbf{Änderung:} In \texttt{push()} wird der eingefügte Wert durch eine Konstante ersetzt –
 	\texttt{buffer[(head + entries++) \% buffer.length] = 16;} – anstatt den tatsächlichen \texttt{value} zu speichern.
@@ -194,5 +194,58 @@ buffer[(head + entries++) % buffer.length] = value;
   \end{subfigure}
   \label{fig:1}
 \end{figure}
+
+% Iteration 4
+\subsection*{Iteration 4}
+	extbf{Änderung:} In \texttt{push()} wird der Schreibindex mit \texttt{(head + entries + 1) \% buffer.length}
+berechnet (anstelle von \texttt{(head + entries) \% buffer.length}).
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPeek2}, \texttt{testPeek3}, alle \texttt{testPop*}
+\textbf{Warum:} Die Reihenfolge in der Werte 
+abgespeichert werden ist verschoben, Peek/Pop 
+lesen falsche Werte.
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{1_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{4_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{4_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+% Iteration 5
+\subsection*{Iteration 5}
+	 \textbf{Änderung:} \texttt{peek()} 
+     gibt \texttt{buffer[(head + 1) \% buffer.length]} 
+     anstatt \texttt{buffer[head]}
+zurück.
+\textbf{Erwartete fehlschlagende Tests:}, \texttt{testPeek2}, \texttt{testPeek3}, \texttt{testPop2}, \texttt{testPop3}, 
+\textbf{Warum:} Peek gibt nicht das älteste, sondern das zweitälteste Element zurück; erwartet werden jeweils
+bestimmte Werte (16 etc.).
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{5_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{5_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{5_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
 
 \end{document}
