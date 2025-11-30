@@ -60,8 +60,7 @@ class RingBuffer
     int pop()
     {
         final int value = peek();
-        head = (head + 1) % buffer.length;
-        --entries;
+        head = (head) % buffer.length;
         return value;
     }
 

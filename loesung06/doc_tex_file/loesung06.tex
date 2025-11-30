@@ -199,7 +199,9 @@ buffer[(head + entries++) % buffer.length] = value;
 \subsection*{Iteration 4}
 	extbf{Änderung:} In \texttt{push()} wird der Schreibindex mit \texttt{(head + entries + 1) \% buffer.length}
 berechnet (anstelle von \texttt{(head + entries) \% buffer.length}).
+\newline
 \textbf{Erwartete fehlschlagende Tests:} \texttt{testPeek2}, \texttt{testPeek3}, alle \texttt{testPop*}
+\newline
 \textbf{Warum:} Die Reihenfolge in der Werte 
 abgespeichert werden ist verschoben, Peek/Pop 
 lesen falsche Werte.
@@ -226,7 +228,9 @@ lesen falsche Werte.
      gibt \texttt{buffer[(head + 1) \% buffer.length]} 
      anstatt \texttt{buffer[head]}
 zurück.
+\newline
 \textbf{Erwartete fehlschlagende Tests:}, \texttt{testPeek2}, \texttt{testPeek3}, \texttt{testPop2}, \texttt{testPop3}, 
+\newline
 \textbf{Warum:} Peek gibt nicht das älteste, sondern das zweitälteste Element zurück; erwartet werden jeweils
 bestimmte Werte (16 etc.).
 
@@ -248,18 +252,23 @@ bestimmte Werte (16 etc.).
 \end{figure}
 
 % Iteration 6
-\subsection*{Iteration 6: Pop bewegt Head in falsche Richtung}
+\subsection*{Iteration 6}
 	extbf{Änderung:} \texttt{pop()} setzt \texttt{head = (head - 1 + buffer.length) \% buffer.length;} anstelle von
 	exttt{head = (head + 1) \% buffer.length}.
-\textbf{Erwartete fehlschlagende Tests:} \texttt{testPop1}, \texttt{testPop2}, \texttt{testPop3}
+    \newline
+
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPush}, \texttt{testPeek3}, \texttt{testPop1}, \texttt{testPop2}, \texttt{testPop3}
+\newline
 \textbf{Warum:} Pop entfernt das falsche Element 
-und die Reihenfolge der ältesten Elemente ändert sich.
+und die Reihenfolge der ältesten Elemente ändert sich, oder diese Fehler: Index -1 out of bounds for length 3
 
 % Iteration 7
 \subsection*{Iteration 7}
 	textbf{Änderung:} \texttt{pop()} reduziert 
     \texttt{entries} nicht mehr
+    \newline
 \textbf{Erwartete fehlschlagende Tests:} \texttt{testPush}, \texttt{testPop*}, \texttt{testInitializer}
+\newline
 \textbf{Warum:} Wenn entries nicht korrekt angepasst wird,
  stimmen Größen- und Leereindikatoren nicht mit
 den Annahmen der Tests überein.
