@@ -133,7 +133,7 @@ des ältesten Elements tritt nicht in Kraft.
     \item \texttt{testPop3(Error: Index -1 out of bounds for length 3)}
     \item \texttt{testPush(NichtBestanden: expected: <1> but was: <-1>)}
 \end{enumerate}
-\newline
+
 \textbf{Warum:} Nach einem Push wird die Größe reduziert statt erhöht; Testfälle, die Größe erwarten,
 werden fehlschlagen, oder Index -1 out of bounds for length 3 passier wird.
 \begin{figure}[H]
@@ -154,9 +154,45 @@ werden fehlschlagen, oder Index -1 out of bounds for length 3 passier wird.
 \end{figure}
 
 
+% Iteration 3 (actual observed failure cause)
+\subsection*{Iteration 3}
+	\textbf{Änderung:} In \texttt{push()} wird der eingefügte Wert durch eine Konstante ersetzt –
+	\texttt{buffer[(head + entries++) \% buffer.length] = 16;} – anstatt den tatsächlichen \texttt{value} zu speichern.
+\newline
+	\textbf{Tatsächlich fehlschlagende Tests:} \texttt{testPeek3}, \texttt{testPop2}, \texttt{testPop3}
+\newline
+	\textbf{Warum:} Jeder Push schreibt den konstanten Wert 16 in den Puffer, unabhängig vom \texttt{value},
+so dass die Reihenfolge und die tatsächlichen Inhalte nicht den Erwartungen der Tests entsprechen.
+Beispiele:
+\begin{itemize}
+  \item \texttt{testPeek3} erwartet nach \texttt{push(16), push(-10), push(-12), push(98)} das älteste Element \texttt{-10} (\texttt{peek()}).\newline
+    Wegen der Konstante 16 sind alle Pufferinhalte statt [-10,...] 16, sodass \texttt{peek()} wieder 16 liefert.
+  \item \texttt{testPop2} erwartet nach \texttt{push(16), push(-10), pop()} dass \texttt{peek()} den Wert -10 liefert.\newline
+    Da beim Push -10 mit 16 überschrieben wurde, wird statt -10 16 als ältestes Element vorgefunden.
+  \item \texttt{testPop3} (Overflow + pop) erwartet als ältestes Element nach pop() \texttt{-3}; stattdessen läuft \texttt{pop()} auf 16.
+\end{itemize}
+\begin{verbatim}
+// buggy
+buffer[(head + entries++) % buffer.length] = 16;
 
-
-
-
+// correct
+buffer[(head + entries++) % buffer.length] = value;
+\end{verbatim}
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{1_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{3_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{3_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
 
 \end{document}
