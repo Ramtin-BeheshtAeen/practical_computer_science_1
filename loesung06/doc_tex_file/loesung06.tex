@@ -247,5 +247,23 @@ bestimmte Werte (16 etc.).
   \label{fig:1}
 \end{figure}
 
+% Iteration 6
+\subsection*{Iteration 6: Pop bewegt Head in falsche Richtung}
+	extbf{Änderung:} \texttt{pop()} setzt \texttt{head = (head - 1 + buffer.length) \% buffer.length;} anstelle von
+	exttt{head = (head + 1) \% buffer.length}.
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPop1}, \texttt{testPop2}, \texttt{testPop3}
+\textbf{Warum:} Pop entfernt das falsche Element 
+und die Reihenfolge der ältesten Elemente ändert sich.
+
+% Iteration 7
+\subsection*{Iteration 7}
+	textbf{Änderung:} \texttt{pop()} reduziert 
+    \texttt{entries} nicht mehr
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPush}, \texttt{testPop*}, \texttt{testInitializer}
+\textbf{Warum:} Wenn entries nicht korrekt angepasst wird,
+ stimmen Größen- und Leereindikatoren nicht mit
+den Annahmen der Tests überein.
+
+
 
 \end{document}
