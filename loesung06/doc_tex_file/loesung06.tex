@@ -1,0 +1,129 @@
+\documentclass{pi1}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+
+
+\begin{document}
+
+
+% Titelzeile
+\maketitle{3}{ Praktikum 13: Mi, 17-20, MZH 0230, Marina Koksharova/Laura Eiermanns }{Ramtin Behehst Aeen}
+
+\section{Testfälle definieren}
+\label{sec:aufgabe1}
+8 tests are defined as follows: 
+\begin{enumerate}
+    \item \textbf{testPush} \label{test:testPush}
+    \begin{description}
+        \item[Zweck:] Überprüft, dass Pushen von Elementen die Größe
+         erhöht bis zur Kapazität und bei Überlauf die ältesten
+          Werte überschreibt.
+        \item[Testfolge:] push(10), push(-10), push(-12) (voll), push(0), push(4) (Overflow)
+        \item[Erwartung:] Die Größe wächst bis auf 3 (Kapazität) und bleibt danach unverändert; ältere Elemente werden überschrieben.
+    \end{description}
+
+    \item \textbf{testInitializer} \label{test:testInitializer}
+    \begin{description}
+        \item[Zweck:] Überprüft, dass ein frisch initialisierter RingBuffer leer ist.
+        \item[Testfolge:] keine Operationen nach Konstruktion
+        \item[Erwartung:] size() == 0
+    \end{description}
+
+    \item \textbf{testPeek1} \label{test:testPeek1}
+    \begin{description}
+        \item[Zweck:] Prüft peek() auf leerem Puffer.
+        \item[Testfolge:] keine Operationen
+        \item[Erwartung:] peek() liefert als Sentinelwert 0 für leeren Puffer.
+    \end{description}
+
+    \item \textbf{testPeek2} \label{test:testPeek2}
+    \begin{description}
+        \item[Zweck:] Prüft peek() mit 1..3 Elementen — es soll das älteste Element zurückgeben.
+        \item[Testfolge:] push(16), push(-10), push(-12)
+        \item[Erwartung:] peek() = 16 (ältestes eingefügtes Element)
+    \end{description}
+
+    \item \textbf{testPeek3} \label{test:testPeek3}
+    \begin{description}
+        \item[Zweck:] Prüft peek(), wenn der Puffer überläuft und das älteste Element überschrieben wird.
+        \item[Testfolge:] push(16), push(-10), push(-12), push(98)
+        \item[Erwartung:] Nach Überlauf ist das älteste Element -10 (16 wurde überschrieben), daher peek() = -10.
+    \end{description}
+
+    \item \textbf{testPop1} \label{test:testPop1}
+    \begin{description}
+        \item[Zweck:] Prüft pop() bei einem einzigen Element: Entfernen des ältesten Elements und leerer Puffer.
+        \item[Testfolge:] push(16), pop()
+        \item[Erwartung:] Nach pop() ist peek() = 0 (leer)
+    \end{description}
+
+    \item \textbf{testPop2} \label{test:testPop2}
+    \begin{description}
+        \item[Zweck:] Prüft pop() bei 2 Elementen: Das zweite Element soll nach pop() zum ältesten Element werden.
+        \item[Testfolge:] push(16), push(-10), pop()
+        \item[Erwartung:] peek() = -10
+    \end{description}
+
+    \item \textbf{testPop3} \label{test:testPop3}
+    \begin{description}
+        \item[Zweck:] Prüft pop() kombiniert mit einem vorherigen Overflow: Nach mehreren Pushes und einer Pop-Operation soll das erwartete älteste Element zurückgegeben werden.
+        \item[Testfolge:] push(16), push(-10), push(-3), push(8) (Overflow), pop()
+        \item[Erwartung:] Nach Overflow enthält der Puffer (-10, -3, 8); pop() entfernt -10; peek() = -3.
+    \end{description}
+\end{enumerate}
+
+\vspace{1em}
+Die vollständigen Testimplementierungen sind im folgenden Listing enthalten:
+\lstinputlisting[
+    language=Java,
+    firstline=1,
+    lastline=200
+]{../RingBuffer/RingBufferTest.java}
+
+
+\section{Iterative Änderungstests}
+\label{sec:iterative}
+In den folgenden 10 Iterationen ist jeweils genau eine
+kleine Änderung an \texttt{RingBuffer.java}
+angenommen. Unter jeder Änderung steht, 
+welcher Test aus \texttt{RingBufferTest.java}
+vermutlich fehlschlagen würde und weshalb.
+Diese Aufstellung hilft beim gezielten
+Testen und Zurückrollen von Fehlern.
+
+% Iteration 1
+\subsection*{Iteration 1}
+	\textbf{Änderung:} In \texttt{push()} wird \texttt{if (entries > buffer.length)}
+     benutzt statt
+	\texttt{if (entries == buffer.length)} (oder \texttt{>=}).
+
+	\textbf{Erwartete fehlschlagende Tests:} \texttt{testPush}, \texttt{testPeek3}, \texttt{testPop3}
+
+	\textbf{Warum:} Bei genau voller Kapazität wird kein Overwrite ausgelöst, die Logik zum Überschreiben
+des ältesten Elements tritt nicht in Kraft.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{1_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{1_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{1_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+
+
+
+
+
+
+\end{document}

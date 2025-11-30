@@ -40,7 +40,7 @@ class RingBuffer
             if (entries == buffer.length) {
                 pop();
             }
-            buffer[(head + entries++) % buffer.length] = value;
+            buffer[(head + entries--) % buffer.length] = value;
         }
     }
 
