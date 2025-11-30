@@ -120,6 +120,39 @@ des ältesten Elements tritt nicht in Kraft.
   \label{fig:1}
 \end{figure}
 
+% Iteration 2
+\subsection*{Iteration 2}
+	\textbf{Änderung:} In \texttt{push()} wird \texttt{entries--} statt 
+    \texttt{entries++} verwendet.
+\newline
+\textbf{Erwartete fehlschlagende Tests:} 
+\begin{enumerate}
+    \item \texttt{testPeek2(Error: Index -1 out of bounds for length 3)}
+    \item \texttt{testPeek3(Error: Index -1 out of bounds for length 3)}
+    \item  \texttt{testPop2(Error: Index -1 out of bounds for length 3)}
+    \item \texttt{testPop3(Error: Index -1 out of bounds for length 3)}
+    \item \texttt{testPush(NichtBestanden: expected: <1> but was: <-1>)}
+\end{enumerate}
+\newline
+\textbf{Warum:} Nach einem Push wird die Größe reduziert statt erhöht; Testfälle, die Größe erwarten,
+werden fehlschlagen, oder Index -1 out of bounds for length 3 passier wird.
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{1_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{2_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{2_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
 
 
 
