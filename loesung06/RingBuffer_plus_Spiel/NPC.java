@@ -45,5 +45,13 @@ class NPC
             player.setVisible(false);
         }
     }
+
+    /**
+     * Return the underlying GameObject representing the NPC so callers can inspect
+     * position and rotation (used by the simple follower example).
+     */
+    public GameObject getCharacter() {
+        return character;
+    }
     
 }
