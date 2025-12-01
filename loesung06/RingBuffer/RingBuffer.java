@@ -27,7 +27,7 @@ class RingBuffer
      */
     RingBuffer(final int capacity)
     {
-        buffer = new int[capacity];
+        buffer = new int[capacity - 1];
     }
 
     /**
@@ -60,7 +60,8 @@ class RingBuffer
     int pop()
     {
         final int value = peek();
-        head = (head) % buffer.length;
+        head = (head + 1) % buffer.length;
+        --entries;
         return value;
     }
 
@@ -71,6 +72,6 @@ class RingBuffer
      */
     int size()
     {
-        return entries;
+         return entries;
     }
 }

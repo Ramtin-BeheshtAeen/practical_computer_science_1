@@ -307,6 +307,70 @@ den Annahmen der Tests überein.
   \label{fig:1}
 \end{figure}
 
+% Iteration 8
+\subsection*{Iteration 8}
+	\textbf{Änderung:} Konstruktor initialisiert Buffer mit 
+    \texttt{new int[capacity - 1]} statt
+     \texttt{new int[capacity]}.
+     \newline
+\textbf{Erwartete fehlschlagende Tests:}
+ \texttt{testPush}, \texttt{testPeek3}, \texttt{testPeek2},  \texttt{testPop2}, \texttt{testPop3},  \texttt{testInitializer}
 
+ \newline
+\textbf{Warum:} Die effektive Speicherkapazität ist kleiner als erwartet;
+ Überlaufverhalten ändert sich.
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{8_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{8_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{8_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+\subsection*{Iteration 9}
+	\textbf{Änderung:} \texttt{size()} 
+    gibt aus Versehen \texttt{buffer.length}
+     statt \texttt{entries} zurück.
+
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPush},
+ \texttt{testInitializer}
+\textbf{Warum:} Assertions, die die Anzahl
+ belegter Einträge prüfen, vergleichen gegen
+  die Kapazität statt die tatsächliche Anzahl.
+
+
+  \begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{9_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{9_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{9_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+
+\subsection*{Iteration 10}
+	\textbf{Änderung:} \texttt{peek()} liefert statt
+     \texttt{0} einen festen Sentinelwert (z.\,B. \texttt{42})
+      wenn der Puffer leer ist.
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPeek1}
+\textbf{Warum:} Dieser Test erwartet explizit 0 als Wert bei leerem Puffer; ein anderer Rückgabewert schlägt fehl.
 
 \end{document}
