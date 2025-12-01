@@ -39,7 +39,7 @@ class FollowerNPC {
         // calculate dx and dy 
         final int dx = player.getX() >= character.getX() ? player.getX() - character.getX() : character.getX() - player.getX();
         final int dy = player.getY() >= character.getY() ? player.getY() - character.getY() : character.getY() - player.getY();
-        final int cap = Math.max(1, dx + dy);
+        final int cap = dx + dy;
         rotBuffer = new RingBuffer(cap);
         final int r = character.getRotation();
         for (int i = 0; i < cap; ++i) {
