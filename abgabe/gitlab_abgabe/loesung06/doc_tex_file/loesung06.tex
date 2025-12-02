@@ -1,0 +1,396 @@
+\documentclass{pi1}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{subcaption}
+
+
+\begin{document}
+
+
+% Titelzeile
+\maketitle{3}{ Praktikum 13: Mi, 17-20, MZH 0230, Marina Koksharova/Laura Eiermanns }{Ramtin Behehst Aeen}
+
+\section{Testfälle definieren}
+\label{sec:aufgabe1}
+8 tests are defined as follows: 
+\begin{enumerate}
+    \item \textbf{testPush} \label{test:testPush}
+    \begin{description}
+        \item[Zweck:] Überprüft, dass Pushen von Elementen die Größe
+         erhöht bis zur Kapazität und bei Überlauf die ältesten
+          Werte überschreibt.
+        \item[Testfolge:] push(10), push(-10), push(-12) (voll), push(0), push(4) (Overflow)
+        \item[Erwartung:] Die Größe wächst bis auf 3 (Kapazität) und bleibt danach unverändert; ältere Elemente werden überschrieben.
+    \end{description}
+
+    \item \textbf{testInitializer} \label{test:testInitializer}
+    \begin{description}
+        \item[Zweck:] Überprüft, dass ein frisch initialisierter RingBuffer leer ist.
+        \item[Testfolge:] keine Operationen nach Konstruktion
+        \item[Erwartung:] size() == 0
+    \end{description}
+
+    \item \textbf{testPeek1} \label{test:testPeek1}
+    \begin{description}
+        \item[Zweck:] Prüft peek() auf leerem Puffer.
+        \item[Testfolge:] keine Operationen
+        \item[Erwartung:] peek() liefert als Sentinelwert 0 für leeren Puffer.
+    \end{description}
+
+    \item \textbf{testPeek2} \label{test:testPeek2}
+    \begin{description}
+        \item[Zweck:] Prüft peek() mit 1..3 Elementen — es soll das älteste Element zurückgeben.
+        \item[Testfolge:] push(16), push(-10), push(-12)
+        \item[Erwartung:] peek() = 16 (ältestes eingefügtes Element)
+    \end{description}
+
+    \item \textbf{testPeek3} \label{test:testPeek3}
+    \begin{description}
+        \item[Zweck:] Prüft peek(), wenn der Puffer überläuft und das älteste Element überschrieben wird.
+        \item[Testfolge:] push(16), push(-10), push(-12), push(98)
+        \item[Erwartung:] Nach Überlauf ist das älteste Element -10 (16 wurde überschrieben), daher peek() = -10.
+    \end{description}
+
+    \item \textbf{testPop1} \label{test:testPop1}
+    \begin{description}
+        \item[Zweck:] Prüft pop() bei einem einzigen Element: Entfernen des ältesten Elements und leerer Puffer.
+        \item[Testfolge:] push(16), pop()
+        \item[Erwartung:] Nach pop() ist peek() = 0 (leer)
+    \end{description}
+
+    \item \textbf{testPop2} \label{test:testPop2}
+    \begin{description}
+        \item[Zweck:] Prüft pop() bei 2 Elementen: Das zweite Element soll nach pop() zum ältesten Element werden.
+        \item[Testfolge:] push(16), push(-10), pop()
+        \item[Erwartung:] peek() = -10
+    \end{description}
+
+    \item \textbf{testPop3} \label{test:testPop3}
+    \begin{description}
+        \item[Zweck:] Prüft pop() kombiniert mit einem vorherigen Overflow: Nach mehreren Pushes und einer Pop-Operation soll das erwartete älteste Element zurückgegeben werden.
+        \item[Testfolge:] push(16), push(-10), push(-3), push(8) (Overflow), pop()
+        \item[Erwartung:] Nach Overflow enthält der Puffer (-10, -3, 8); pop() entfernt -10; peek() = -3.
+    \end{description}
+\end{enumerate}
+
+\vspace{1em}
+Die vollständigen Testimplementierungen sind im folgenden Listing enthalten:
+\lstinputlisting[
+    language=Java,
+    firstline=1,
+    lastline=200
+]{../RingBuffer/RingBufferTest.java}
+
+
+\section{Iterative Änderungstests}
+\label{sec:iterative}
+In den folgenden 10 Iterationen ist jeweils genau eine
+kleine Änderung an \texttt{RingBuffer.java}
+angenommen. Unter jeder Änderung steht, 
+welcher Test aus \texttt{RingBufferTest.java}
+vermutlich fehlschlagen würde und weshalb.
+Diese Aufstellung hilft beim gezielten
+Testen und Zurückrollen von Fehlern.
+
+% Iteration 1
+\subsection*{Iteration 1}
+	\textbf{Änderung:} In \texttt{push()} wird \texttt{if (entries > buffer.length)}
+     benutzt statt
+	\texttt{if (entries == buffer.length)} (oder \texttt{>=}).
+
+	\textbf{Erwartete fehlschlagende Tests:} \texttt{testPush}, \texttt{testPeek3}, \texttt{testPop3}
+
+	\textbf{Warum:} Bei genau voller Kapazität wird kein Overwrite ausgelöst, die Logik zum Überschreiben
+des ältesten Elements tritt nicht in Kraft.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{1_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{1_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{1_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+% Iteration 2
+\subsection*{Iteration 2}
+	\textbf{Änderung:} In \texttt{push()} wird \texttt{entries--} statt 
+    \texttt{entries++} verwendet.
+\newline
+\textbf{Erwartete fehlschlagende Tests:} 
+\begin{enumerate}
+    \item \texttt{testPeek2(Error: Index -1 out of bounds for length 3)}
+    \item \texttt{testPeek3(Error: Index -1 out of bounds for length 3)}
+    \item  \texttt{testPop2(Error: Index -1 out of bounds for length 3)}
+    \item \texttt{testPop3(Error: Index -1 out of bounds for length 3)}
+    \item \texttt{testPush(NichtBestanden: expected: <1> but was: <-1>)}
+\end{enumerate}
+
+\textbf{Warum:} Nach einem Push wird die Größe reduziert statt erhöht; Testfälle, die Größe erwarten,
+werden fehlschlagen, oder Index -1 out of bounds for length 3 passier wird.
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{1_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{2_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{2_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+
+% Iteration 3 
+\subsection*{Iteration 3}
+	\textbf{Änderung:} In \texttt{push()} wird der eingefügte Wert durch eine Konstante ersetzt –
+	\texttt{buffer[(head + entries++) \% buffer.length] = 16;} – anstatt den tatsächlichen \texttt{value} zu speichern.
+\newline
+	\textbf{Tatsächlich fehlschlagende Tests:} \texttt{testPeek3}, \texttt{testPop2}, \texttt{testPop3}
+\newline
+	\textbf{Warum:} Jeder Push schreibt den konstanten Wert 16 in den Puffer, unabhängig vom \texttt{value},
+so dass die Reihenfolge und die tatsächlichen Inhalte nicht den Erwartungen der Tests entsprechen.
+Beispiele:
+\begin{itemize}
+  \item \texttt{testPeek3} erwartet nach \texttt{push(16), push(-10), push(-12), push(98)} das älteste Element \texttt{-10} (\texttt{peek()}).\newline
+    Wegen der Konstante 16 sind alle Pufferinhalte statt [-10,...] 16, sodass \texttt{peek()} wieder 16 liefert.
+  \item \texttt{testPop2} erwartet nach \texttt{push(16), push(-10), pop()} dass \texttt{peek()} den Wert -10 liefert.\newline
+    Da beim Push -10 mit 16 überschrieben wurde, wird statt -10 16 als ältestes Element vorgefunden.
+  \item \texttt{testPop3} (Overflow + pop) erwartet als ältestes Element nach pop() \texttt{-3}; stattdessen läuft \texttt{pop()} auf 16.
+\end{itemize}
+\begin{verbatim}
+// buggy
+buffer[(head + entries++) % buffer.length] = 16;
+
+// correct
+buffer[(head + entries++) % buffer.length] = value;
+\end{verbatim}
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{1_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{3_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{3_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+% Iteration 4
+\subsection*{Iteration 4}
+	extbf{Änderung:} In \texttt{push()} wird der Schreibindex mit \texttt{(head + entries + 1) \% buffer.length}
+berechnet (anstelle von \texttt{(head + entries) \% buffer.length}).
+\newline
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPeek2}, \texttt{testPeek3}, alle \texttt{testPop*}
+\newline
+\textbf{Warum:} Die Reihenfolge in der Werte 
+abgespeichert werden ist verschoben, Peek/Pop 
+lesen falsche Werte.
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{1_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{4_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{4_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+% Iteration 5
+\subsection*{Iteration 5}
+	 \textbf{Änderung:} \texttt{peek()} 
+     gibt \texttt{buffer[(head + 1) \% buffer.length]} 
+     anstatt \texttt{buffer[head]}
+zurück.
+\newline
+\textbf{Erwartete fehlschlagende Tests:}, \texttt{testPeek2}, \texttt{testPeek3}, \texttt{testPop2}, \texttt{testPop3}, 
+\newline
+\textbf{Warum:} Peek gibt nicht das älteste, sondern das zweitälteste Element zurück; erwartet werden jeweils
+bestimmte Werte (16 etc.).
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{5_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{5_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{5_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+% Iteration 6
+\subsection*{Iteration 6}
+	extbf{Änderung:} \texttt{pop()} setzt \texttt{head = (head - 1 + buffer.length) \% buffer.length;} anstelle von
+	exttt{head = (head + 1) \% buffer.length}.
+    \newline
+
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPush}, \texttt{testPeek3}, \texttt{testPop1}, \texttt{testPop2}, \texttt{testPop3}
+\newline
+\textbf{Warum:} Pop entfernt das falsche Element 
+und die Reihenfolge der ältesten Elemente ändert sich, oder diese Fehler: Index -1 out of bounds for length 3
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{6_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{6_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{6_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+
+% Iteration 7
+\subsection*{Iteration 7}
+	textbf{Änderung:} \texttt{pop()} reduziert 
+    \texttt{entries} nicht mehr
+    \newline
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPush}, \texttt{testPop*}, \texttt{testInitializer}
+\newline
+\textbf{Warum:} Wenn entries nicht korrekt angepasst wird,
+ stimmen Größen- und Leereindikatoren nicht mit
+den Annahmen der Tests überein.
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{6_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{7_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{7_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+% Iteration 8
+\subsection*{Iteration 8}
+	\textbf{Änderung:} Konstruktor initialisiert Buffer mit 
+    \texttt{new int[capacity - 1]} statt
+     \texttt{new int[capacity]}.
+     \newline
+\textbf{Erwartete fehlschlagende Tests:}
+ \texttt{testPush}, \texttt{testPeek3}, \texttt{testPeek2},  \texttt{testPop2}, \texttt{testPop3},  \texttt{testInitializer}
+
+ \newline
+\textbf{Warum:} Die effektive Speicherkapazität ist kleiner als erwartet;
+ Überlaufverhalten ändert sich.
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{8_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{8_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{8_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+\subsection*{Iteration 9}
+	\textbf{Änderung:} \texttt{size()} 
+    gibt aus Versehen \texttt{buffer.length}
+     statt \texttt{entries} zurück.
+
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPush},
+ \texttt{testInitializer}
+\textbf{Warum:} Assertions, die die Anzahl
+ belegter Einträge prüfen, vergleichen gegen
+  die Kapazität statt die tatsächliche Anzahl.
+
+
+  \begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{9_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{9_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{9_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+
+\subsection*{Iteration 10}
+	\textbf{Änderung:} \texttt{peek()} liefert statt
+     \texttt{0} einen festen Sentinelwert (z.\,B. \texttt{42})
+      wenn der Puffer leer ist.
+     \newline
+
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPeek1} ,\texttt{testPop1}
+     \newline
+\textbf{Warum:} Dieser Test erwartet explizit 0 als Wert bei leerem Puffer; ein anderer Rückgabewert schlägt fehl.
+  \begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{10_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{10_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{10_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
+
+\end{document}
