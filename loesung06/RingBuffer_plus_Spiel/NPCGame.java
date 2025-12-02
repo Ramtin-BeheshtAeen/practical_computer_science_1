@@ -94,6 +94,7 @@ abstract class NPCGame extends Game
             //child.act();
             //laila.act();
             follower.act();
+            
             //laila.checkCollision(player);
             //child.checkCollision(player);
             

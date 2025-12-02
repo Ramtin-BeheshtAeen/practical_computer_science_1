@@ -370,7 +370,27 @@ den Annahmen der Tests überein.
 	\textbf{Änderung:} \texttt{peek()} liefert statt
      \texttt{0} einen festen Sentinelwert (z.\,B. \texttt{42})
       wenn der Puffer leer ist.
-\textbf{Erwartete fehlschlagende Tests:} \texttt{testPeek1}
+     \newline
+
+\textbf{Erwartete fehlschlagende Tests:} \texttt{testPeek1} ,\texttt{testPop1}
+     \newline
 \textbf{Warum:} Dieser Test erwartet explizit 0 als Wert bei leerem Puffer; ein anderer Rückgabewert schlägt fehl.
+  \begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.32\linewidth}
+    \includegraphics[width=\linewidth]{10_befor.png}
+    \caption{vorher}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.32\linewidth} 
+    \includegraphics[width=\linewidth]{10_after.png}
+    \caption{nachher}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.4\linewidth}
+    \includegraphics[width=\linewidth]{10_test.png}
+    \caption{Testergebnisse}
+  \end{subfigure}
+  \label{fig:1}
+\end{figure}
+
 
 \end{document}

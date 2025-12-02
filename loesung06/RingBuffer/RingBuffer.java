@@ -27,7 +27,7 @@ class RingBuffer
      */
     RingBuffer(final int capacity)
     {
-        buffer = new int[capacity - 1];
+        buffer = new int[capacity];
     }
 
     /**

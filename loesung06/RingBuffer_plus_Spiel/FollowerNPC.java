@@ -60,7 +60,8 @@ class FollowerNPC {
     }
 
     /**
-     * Called every game tick; when chasing it will read one rotation from the
+     * Called every game tick; when chasing it will read
+     * one rotation from the
      * buffer and move the NPC in that direction.
      */
     public void act() {
