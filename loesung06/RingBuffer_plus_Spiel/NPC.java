@@ -6,14 +6,14 @@
 class NPC
 {
     // Aufgabe 1: Attribute
-    private GameObject character;
-    private int maxStep;
+    final private GameObject character;
+    final private int maxStep;
     private int startStep;
     
     public NPC(GameObject character, int maxStep, int startStep){
         this.character   = character;
         this.maxStep     = maxStep;
-        this.startStep = startStep;
+        this.startStep   = startStep;
 
     }
     
