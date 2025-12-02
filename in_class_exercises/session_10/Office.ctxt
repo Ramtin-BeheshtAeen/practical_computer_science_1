@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Office
+comment0.text=\r\n\ Dies\ ist\ die\ Hauptklasse\ f\u00FCr\ unsere\ Psychiaterin.\ Sie\ enth\u00E4lt\ die\ Methode,\r\n\ die\ das\ Programm\ startet.\r\n\r\n\ @author\ Thomas\ R\u00F6fer\r\n
+comment1.params=
+comment1.target=void\ main()
+comment1.text=Das\ Spiel\ beginnt\ durch\ Aufruf\ dieser\ Methode.
+numComments=2
