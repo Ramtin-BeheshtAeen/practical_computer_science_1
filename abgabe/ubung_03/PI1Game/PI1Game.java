@@ -1,22 +1,17 @@
 // Importieren der VK_*-Tastenkonstanten
 import static java.awt.event.KeyEvent.*;
-//right 0
-//down 1
-//left 2
-// up 3
-//
+
 /**
  * Dies ist die Hauptklasse eines Spiels. Sie enthält die Hauptmethode, die zum
  * Starten des Spiels aufgerufen werden muss.
  *
- * @author ramtin
+ * @author Thomas Röfer
  */
-abstract class Main extends Game
+abstract class PI1Game extends Game
 {
     /** Das Spiel beginnt durch Aufruf dieser Methode. */
     static void main()
     {
-        // Durch den eigentlichen Code ersetzen
         new GameObject(0, 0, 0, "path-e");
         new GameObject(1, 0, 0, "path-i");
         new GameObject(2, 0, 1, "path-t");
@@ -41,6 +36,32 @@ abstract class Main extends Game
         new GameObject(1, 0, 2, "claudius");
         new GameObject(0, 1, 0, "laila");
         new GameObject(3, 2, 2, "child");
-        
+        final GameObject player = new GameObject(0, 3, 0, "woman");
+        while (true) {
+            final int key = getNextKey();
+            if (key == VK_RIGHT) {
+                player.setRotation(0);
+                player.setLocation(player.getX() + 1, player.getY());
+                playSound("step");
+            }
+            else if (key == VK_DOWN) {
+                player.setRotation(1);
+                player.setLocation(player.getX(), player.getY() + 1);
+                playSound("step");
+            }
+            else if (key == VK_LEFT) {
+                player.setRotation(2);
+                player.setLocation(player.getX() - 1, player.getY());
+                playSound("step");
+            }
+            else if (key == VK_UP) {
+                player.setRotation(3);
+                player.setLocation(player.getX(), player.getY() - 1);
+                playSound("step");
+            }
+            else {
+                playSound("error");
+            }
+        }
     }
 }
