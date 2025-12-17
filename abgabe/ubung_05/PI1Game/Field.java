@@ -4,6 +4,7 @@
  */
 class Field
 {
+     private final String[] field;
     /**
      * Die Dateinamen der Bodengitterelemente, die direkt mit einer
      * Rotation 0 verwendet werden können. Der Index ergibt sich
@@ -32,13 +33,46 @@ class Field
         "path-x"
     };
 
+    Field(final String[] field){
+        this.field = field;
+        
+        for(int y=0; y<field.length; y+=2){
+            for(int x = 0; x<field[y].length(); x+=2){
+            new GameObject(x/2, y/2, 0,neighborhoodToFilename[getN(x,y)]);
+            }
+        }
+    }
+    
+    private char getChar(int x, int y){
+        if(x >= 0 &&  y>= 0 && y < field.length && x < field[y].length()){
+            return field[y].charAt(x);
+        }else
+            return ' '; 
+    }
+    
+    private int getN(int x, int y){
+        int n = 0;
+        int bit = 1;
+        final int [][]ns =  {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        
+        for (final int[] offset : ns) {
+            if(getChar(x + offset[0], y + offset[1]) != ' '){
+                n += bit;
+            }
+            bit *= 2;
+        }
+        return n;
+    }
+    
+    public 
+    
     /** Ein Testfall, der alle Nachbarschaften enthält. */
     static void test()
     {
         new GameObject.Canvas(5, 5, 96, 96);
 
         // Einkommentieren, sobald Konstruktor vorhanden
-        /*new Field(new String[] {
+        new Field(new String[] {
             "O-O-O-O  ",
             "|   |    ",
             "O O-O-O O",
@@ -48,6 +82,6 @@ class Field
             "O O-O-O O",
             "    |   |",
             "O-O-O-O-O"
-        });*/
+        });
     }
 }
