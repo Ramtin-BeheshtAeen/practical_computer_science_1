@@ -7,7 +7,6 @@ abstract class Actor extends GameObject
 {
     private final Field field;
     public Actor(final int x, final int y, int rotation, final String fileName, final Field field){
-        //super(...) calls the constructor of GameObject
         super(x, y, rotation, fileName);
         this.field = field;
     }
@@ -15,7 +14,6 @@ abstract class Actor extends GameObject
     boolean canWalk(final int direction){
         return field.hasNeighbor(getX(), getY(), direction);
     }
-    
     
     abstract void act();
     
