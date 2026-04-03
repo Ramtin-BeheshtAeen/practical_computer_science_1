@@ -2,7 +2,7 @@
  * Diese Klasse repräsentiert ein Spielfeld. Ihr Konstruktur bekommt dieses als
  * String-Array übergeben.
  *
- * @author Thomas Röfer
+ * @author Ramtin Behest Aeen
  */
 class Field
 {
