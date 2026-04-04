@@ -1,0 +1,47 @@
+
+/**
+ * Write a description of class Test here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+public class Test
+{
+    // instance variables - replace the example below with your own
+    public Test(){
+        TestindexOf();
+        TestGrid();
+    }
+
+   
+    public void TestindexOf()
+    {
+        String symbols = "p P q Q l L ";
+        char c = 'q';
+        
+        int index = symbols.indexOf(c);
+        System.out.println("index of " + c + "  = " + index); //4
+        
+        //unknowm symbol:
+        char unknown = 'X';
+        System.out.println("index of 'X' " + " =  " + symbols.indexOf(unknown)); //-1
+    }
+    
+    public void TestGrid()
+    {
+        String[] lines = {
+            "p . G",   // y=0
+            ". . .",   // y=1 (skip)
+            "l . ."    // y=2
+        };
+        
+        for (int y =0; y < lines.length; y+=2){
+            for(int x = 0; x < lines[y].length(); x+=2){
+                char c = lines[y].charAt(x);
+                System.out.println("Grid[" + y/2 + "][" + x/2 + "] = " + c);
+            }
+        }
+        
+        
+    }
+}
