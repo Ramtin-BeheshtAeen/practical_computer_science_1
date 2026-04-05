@@ -44,4 +44,27 @@ public class Test
         
         
     }
+    
+    public void testAll(){
+        String[] level = {
+            "p . l . G",
+            ". . . . .",
+            ". . i . ."
+        };
+        
+        String symbols = "pPqQlLiIcCdDsSzZGbBWO";
+        int[] playerPos = {-1, -1};
+        "pPqQ_lLiI_cCdD_sSzZ_GbBW_O"
+        for(int y = 0; y < level.length; y+=2){
+            for(int x = 0; x < level[y].length(); x+=2){
+                char c = level[y].charAt(x);
+                
+                int indexOfCharInSymbols = symbols.indexOf(c);
+                if(indexOfCharInSymbols == -1){
+                    System.out.println("Unknown: " + c);
+                }
+                
+            }
+        }
+    }
 }

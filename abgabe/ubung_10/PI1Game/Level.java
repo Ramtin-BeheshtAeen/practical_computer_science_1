@@ -51,7 +51,45 @@ public class Level
     
         field = new Field(new String[lines.size()]);
         
+        String symbols = "pPqQlLiIcCdDsSzZGbBWO ";
+        /* 0 1 2 3
+         * p P q Q
+         * ----------
+         * 
+         * 4 5 6 7
+         * l L i I
+         * 
+         * 8 9 10 11
+         * c C d  D
+         * 
+         * 12 13 14 15
+         * s  S  z  Z
+         * ------------
+         * 16 17 18 19
+         * G  b  B  W   O 
+         * 
+         * index:  0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
+         * char:   p  P  q  Q  l  L  i  I  c  C  d  D  s  S  z  Z
+         *                      |----laila----|--claudius--|---child--|
+         *                      
+         *  index % 4:        // rotation:  0,1,2,3 , 0,1,2,3 , 0,1,2,3
+         *  index / 4 - 1:   // image:      0,0,0,0 , 1,1,1,1 , 2,2,2,2                    
+         */
+        
         for(int y = 0; y < lines.size(); y +=2){
+            for(int x = 0; x < lines.get(y).length(); x+=2){
+                char c = lines.get(y).charAt(x);
+                final int indexOfCharInSymbols = symbols.indexOf(c);
+                
+                if (indexOfCharInSymbols == -1) {
+                // Kein erlaubtes Symbol gefunden
+                throw new IllegalArgumentException("Unbekanntes Symbol '" + lines.get(y).charAt(x)
+                        + "' in Level '" + fileName + "', Zeile " + (y + 1) + ", Spalte " + (x + 1)
+                        + " gefunden.");
+                if(indexOfCharInSymbols < 4)
+            }
+
+            }
             
         }
     }
