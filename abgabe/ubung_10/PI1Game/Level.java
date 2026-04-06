@@ -23,13 +23,14 @@ import java.io.FileNotFoundException;
 public class Level
 {
     private final Field field;
-    
-    
-    
+    private final List<Actor> actors          = new ArrayList<>();
+    private final List<GameObject> gameObjects = new ArrayList<>();
     
     public Level(final String fileName){
-        
+         
         final List<String> lines = new ArrayList<String>();
+        
+        String symbols = "pPqQlLiIcCdDsSzZGbBWO ";
         
         try{
             final FileInputStream stream = new FileInputStream(fileName);
@@ -48,10 +49,11 @@ public class Level
         } catch (IOException e){
             System.out.println("Die Level-Datei wurde nicht gefunden.");
         }
-    
-        field = new Field(new String[lines.size()]);
         
-        String symbols = "pPqQlLiIcCdDsSzZGbBWO ";
+        field = new Field(lines.toArray(new String[lines.size()]));
+        //initializing the player
+        Player player = new Player(-1,0,0, field, "woman");
+        
         /* 0 1 2 3
          * p P q Q
          * ----------
@@ -65,7 +67,7 @@ public class Level
          * 12 13 14 15
          * s  S  z  Z
          * ------------
-         * 16 17 18 19
+         * 16 17 18 19  20
          * G  b  B  W   O 
          * 
          * index:  0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
@@ -83,14 +85,50 @@ public class Level
                 
                 if (indexOfCharInSymbols == -1) {
                 // Kein erlaubtes Symbol gefunden
-                throw new IllegalArgumentException("Unbekanntes Symbol '" + lines.get(y).charAt(x)
+                    throw new IllegalArgumentException("Unbekanntes Symbol '" + lines.get(y).charAt(x)
                         + "' in Level '" + fileName + "', Zeile " + (y + 1) + ", Spalte " + (x + 1)
                         + " gefunden.");
-                if(indexOfCharInSymbols < 4)
+                }
+                
+                else if(indexOfCharInSymbols < 4){
+                    //checling if there is just one player:
+                    if(player.getX()!= -1){
+                        throw new IllegalArgumentException("Zweite Spielfigur in Level '"
+                            + fileName + "', Zeile " + (y + 1) + ", Spalte " + (x + 1)
+                            + " gefunden.");
+                    }
+                     // Existierende Spielfigur platzieren.
+                    player.setLocation(x / 2, y / 2);
+                    player.setRotation(indexOfCharInSymbols);
+                    actors.add(player);
+                    gameObjects.add(player);
+                }
+                
+                else if (indexOfCharInSymbols < 16){
+                    final String[] images = {"laila", "claudius", "child"};
+                    final Actor actor     = new  WalkerNPC(x/2, y/2, indexOfCharInSymbols % 4, field, images[( indexOfCharInSymbols / 4) -1], player);
+                    actors.add(actor);
+                    gameObjects.add(actor);
+                    
+                }
+                else if (indexOfCharInSymbols < 19){
+                    final String[] images  = {"goal", "bridge-0", "bridge-1"};
+                    //bucket = (n - min)/ bucket size
+                    //[16, 17, 18], buckets = 3 , bucketSize = 3 / 3 = 1
+                    //bucket = (n - 16) / 1 = n - 16
+                    new GameObject(x/2, y/2, 0 , images[indexOfCharInSymbols - 16]);
+                    
+                    
+                }
             }
-
-            }
-            
         }
+        // Wurde die Spielfigur nicht bewegt, wurde keine gefunden.
+        if(player.getX() == -1) {
+            throw new IllegalArgumentException("Keine Spielfigur in Level '" + fileName + "' gefunden");
+        }
+    }
+    
+    List<Actor> getActors(){
+        return actors;
     }
 }
