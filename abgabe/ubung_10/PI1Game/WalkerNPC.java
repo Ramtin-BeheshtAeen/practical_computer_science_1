@@ -20,6 +20,13 @@ class WalkerNPC extends Actor
     @Override
     void act()
     {
+        // Kollision durch vorherigen Spielerzug direkt behandeln.
+        if (getX() == player.getX() && getY() == player.getY()) {
+            player.setVisible(false);
+            playSound("go-away");
+            return;
+        }
+
         // Wenn im Verfolgermodus, dann Schritt aufzeichnen
         if (stepsToFollow != null) {
             stepsToFollow.push(player.getRotation());
@@ -82,14 +89,7 @@ class WalkerNPC extends Actor
                 }
             }
         }
-
-        // Wenn gleiche Position wie Spielfigur, lasse diese verschwinden
-        if (getX() == player.getX()) {
-            if (getY() == player.getY()) {
-                player.setVisible(false);
-                playSound("go-away");
-            }
-        }
+        
     }
     
 }
